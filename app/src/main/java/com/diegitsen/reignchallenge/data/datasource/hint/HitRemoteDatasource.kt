@@ -11,8 +11,14 @@ import io.reactivex.schedulers.Schedulers
 class HitRemoteDatasource(context: Context)  {
     var disposable: Disposable? = null
     private val apiService by lazy { ApiService.create() }
+    private val hitLocalDataSource =
+        HitLocalDatasource(
+            context
+        )
 
     fun getHints(onHitRemoteReadyCallback: OnHitRemoteReadyCallback){
+
+
         disposable = apiService.getHits()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -21,8 +27,9 @@ class HitRemoteDatasource(context: Context)  {
                     run {
                         if(result.hits.isNotEmpty()){
                             onHitRemoteReadyCallback.onRemoteDataReady(result.hits)
+                            hitLocalDataSource.saveHits(result.hits)
                         }else{
-                            Log.e("StoreRemoteDS", "error getting the data")
+                            Log.e("HitRemoteDS", "error getting the data")
                         }
                     }
                 },
@@ -32,7 +39,10 @@ class HitRemoteDatasource(context: Context)  {
                     }
                 }
             )
+
     }
+
+
 }
 
 interface OnHitRemoteReadyCallback{
