@@ -5,6 +5,6 @@ data class Hit(
     val story_title: String,
     val story_url: String,
     val author: String,
-    val status: Boolean
+    var status: Boolean
 ) {
 }

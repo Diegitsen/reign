@@ -26,7 +26,16 @@ class HitRepository(context: Context) {
                 remoteDataSource.getHints(object :
                     OnHitRemoteReadyCallback {
                     override fun onRemoteDataReady(data: List<Hit>) {
-                        onHitRepositoryReadyCallback.onDataReady(data)
+                        if(!localDataSource.getHitsData().isNullOrEmpty()){
+                            var hits = data
+                            localDataSource.getHitsData()!!.filter { it -> !it.status }
+                            onHitRepositoryReadyCallback.onDataReady(localDataSource.getHitsData()!!)
+                        }else{
+                            onHitRepositoryReadyCallback.onDataReady(data)
+                            localDataSource.saveHits(data)
+                        }
+
+
                     }
                 })
             }else{

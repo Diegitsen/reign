@@ -27,7 +27,7 @@ class HitRemoteDatasource(context: Context)  {
                     run {
                         if(result.hits.isNotEmpty()){
                             onHitRemoteReadyCallback.onRemoteDataReady(result.hits)
-                            hitLocalDataSource.saveHits(result.hits)
+
                         }else{
                             Log.e("HitRemoteDS", "error getting the data")
                         }

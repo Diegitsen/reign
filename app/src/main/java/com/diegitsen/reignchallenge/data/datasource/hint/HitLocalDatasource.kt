@@ -15,6 +15,10 @@ class HitLocalDatasource(context: Context): Constant {
     fun saveHits(hits: List<Hit>){
         preference.saveHits(HITS_DATA, hits)
     }
+
+    fun getHitsData():  List<Hit>? {
+        return preference.getHits(HITS_DATA)
+    }
 }
 
 interface OnHitLocalReadyCallback{
